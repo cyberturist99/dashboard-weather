@@ -1,0 +1,18 @@
+<svg width="100" height="100" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" >
+  <defs>
+    <linearGradient id="tempGradient" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0%" stop-color="#2196F3"/>  <!-- холодный синий -->
+      <stop offset="100%" stop-color="#F44336"/> <!-- тёплый красный -->
+    </linearGradient>
+  </defs>
+
+  <!-- Корпус термометра -->
+  <rect x="26" y="10" width="12" height="40" rx="6" ry="6" fill="none" stroke="#333" stroke-width="2"/>
+
+  <!-- Стекло термометра (заливка с градиентом) -->
+  <rect x="30" y="14" width="4" height="32" fill="url(#tempGradient)" rx="2" ry="2"/>
+
+  <!-- Круглый баллон термометра -->
+  <circle cx="32" cy="52" r="10" fill="url(#tempGradient)" stroke="#333" stroke-width="2"/>
+  <circle cx="32" cy="52" r="6" fill="#fff"/>
+</svg>
