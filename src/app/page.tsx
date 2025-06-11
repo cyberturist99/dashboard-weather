@@ -1,11 +1,5 @@
-import Header from "@/components/Header/Header";
-import CurrentWeather from "@/components/CurrentWeather/CurrentWeather";
+import CurrentWeather from '@/components/CurrentWeather'
 
-export default function Home() {
-	return (
-		<>
-			<Header />
-			<CurrentWeather />
-		</>
-	);
+export default async function Home() {
+  return <CurrentWeather />
 }
