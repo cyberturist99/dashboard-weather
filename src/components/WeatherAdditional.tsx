@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { WeatherAdditionalProps } from '@/interfaces/types'
+import { WeatherData } from '@/interfaces/types'
 import {
   getVisibilityDescription,
   getUvDescription,
@@ -8,6 +8,10 @@ import {
   translateWindDir,
 } from '@/utils/weatherAddhelpers'
 import Compass from './Compass'
+
+interface WeatherAdditionalProps {
+  data: WeatherData
+}
 export default function WeatherAdditional({ data }: WeatherAdditionalProps) {
   const { current, forecast } = data
 

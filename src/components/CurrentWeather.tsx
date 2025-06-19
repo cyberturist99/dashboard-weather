@@ -23,6 +23,7 @@ export default function CurrentWeather() {
         {Math.round(forecastday[0].day.maxtemp_c)}°, мин.:{' '}
         {Math.round(forecastday[0].day.mintemp_c)}°
       </WeatherInfo>
+
       <Weather24 />
       <UpcomingWeather />
       <WeatherAdditional data={data} />
