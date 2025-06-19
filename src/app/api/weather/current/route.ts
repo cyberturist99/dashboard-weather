@@ -1,3 +1,4 @@
+import { isWeatherErrorResponse } from '@/interfaces/typeguards'
 import { WeatherApiError, WeatherData } from '@/interfaces/types'
 import { NextResponse } from 'next/server'
 
@@ -12,7 +13,11 @@ export const GET = async (): Promise<NextResponse> => {
     const data: WeatherData | WeatherApiError = await response.json()
 
     if (!response.ok) {
-      return NextResponse.json({ error: data.error.message }, { status: 500 })
+      if (isWeatherErrorResponse(data)) {
+        return NextResponse.json({ error: data.error.message }, { status: 500 })
+      } else {
+        throw new Error('Unknown response from API')
+      }
     }
 
     return NextResponse.json(data)

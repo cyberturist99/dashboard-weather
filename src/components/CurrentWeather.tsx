@@ -7,9 +7,11 @@ import styled from 'styled-components'
 import { useCurrentWeather } from '@/hooks/useCurrentWeather'
 
 export default function CurrentWeather() {
-  const { data, isLoading } = useCurrentWeather()
+  const { data, isLoading, isError, error } = useCurrentWeather()
 
-  if (isLoading || !data) return <WrapperMain>Загрузка...</WrapperMain>
+  if (isLoading) return <WrapperMain>Загрузка...</WrapperMain>
+  if (isError) return <WrapperMain>{error.message}</WrapperMain>
+  if (!data) return <WrapperMain>Нет данных</WrapperMain>
 
   const { location, current, forecast } = data
   const { forecastday } = forecast

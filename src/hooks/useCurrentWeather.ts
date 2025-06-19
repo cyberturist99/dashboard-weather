@@ -8,7 +8,7 @@ interface ErrorResponse {
 }
 
 export const useCurrentWeather = () => {
-  return useQuery<WeatherData, Error>({
+  return useQuery<WeatherData>({
     queryKey: ['weather', 'current'],
     queryFn: async () => {
       const response = await fetch('/api/weather/current')
@@ -21,7 +21,7 @@ export const useCurrentWeather = () => {
         }
         throw new Error(errorData?.error?.message || 'Failed to fetch weather')
       }
-      return response.json() as Promise<WeatherData>
+      return response.json()
     },
   })
 }
