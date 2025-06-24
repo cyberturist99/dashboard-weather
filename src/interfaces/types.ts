@@ -20,12 +20,18 @@ interface WeatherDay {
 interface WeatherForecastDay {
   date: string
   day: WeatherDay
+  hour: HourlyForecast[]
 }
 interface WeatherLocation {
   name: string
 }
 
-interface WeatherForecast {
+export interface HourlyForecast {
+  temp_c: number
+  time: string
+}
+
+export interface WeatherForecast {
   forecastday: WeatherForecastDay[]
 }
 
@@ -34,6 +40,15 @@ export interface WeatherData {
   forecast: WeatherForecast
   location: WeatherLocation
 }
+
+export interface ForecastTenDays {
+  daily: {
+    time: string[]
+    temperature_2m_max: number[]
+    temperature_2m_min: number[]
+  }
+}
+
 export interface WeatherApiError {
   error: {
     code?: number

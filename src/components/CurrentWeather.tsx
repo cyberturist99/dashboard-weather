@@ -26,7 +26,7 @@ export default function CurrentWeather() {
         {Math.round(forecastday[0].day.mintemp_c)}°
       </WeatherInfo>
 
-      <Weather24 />
+      <Weather24 forecast={forecastday[0].hour} />
       <UpcomingWeather />
       <WeatherAdditional data={data} />
     </WrapperMain>

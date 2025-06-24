@@ -1,5 +1,6 @@
 'use client'
 import styled from 'styled-components'
+import { HourlyForecast } from '@/interfaces/types'
 import {
   AreaChart,
   Area,
@@ -10,19 +11,16 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 
-const data = [
-  { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
-  { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
-  { name: 'Page C', uv: -1000, pv: 9800, amt: 2290 },
-  { name: 'Page D', uv: 500, pv: 3908, amt: 2000 },
-  { name: 'Page E', uv: -2000, pv: 4800, amt: 2181 },
-  { name: 'Page F', uv: -250, pv: 3800, amt: 2500 },
-  { name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
-]
+interface Weather24Props {
+  forecast: HourlyForecast[]
+}
 
-function gradientOffset() {
-  const dataMax = Math.max(...data.map((i) => i.uv))
-  const dataMin = Math.min(...data.map((i) => i.uv))
+function gradientOffset(data: HourlyForecast[]) {
+  if (!data.length) return 0
+
+  const temps = data.map((i) => i.temp_c)
+  const dataMax = Math.max(...temps)
+  const dataMin = Math.min(...temps)
 
   if (dataMax <= 0) return 0
   if (dataMin >= 0) return 1
@@ -30,8 +28,14 @@ function gradientOffset() {
   return dataMax / (dataMax - dataMin)
 }
 
-export default function Weather24() {
-  const off = gradientOffset()
+export default function Weather24({ forecast }: Weather24Props) {
+  const off = gradientOffset(forecast)
+
+  const chartData = forecast.map(({ time, temp_c }) => ({
+    name: time.slice(10, 13),
+    '°C': Math.round(temp_c),
+    tempDisplay: `${Math.round(temp_c)}°C`,
+  }))
 
   return (
     <Wrapper24>
@@ -41,13 +45,16 @@ export default function Weather24() {
         height='100%'
       >
         <AreaChart
-          data={data}
+          data={chartData}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray='3 3' />
           <XAxis dataKey='name' />
-          <YAxis />
-          <Tooltip />
+          <YAxis tickFormatter={(value) => `${value}°C`} />
+          <Tooltip
+            formatter={(value) => [`${value}°C`, 'Температура']}
+            labelFormatter={(label) => `Время: ${label}:00`}
+          />
           <defs>
             <linearGradient
               id='splitColor'
@@ -58,7 +65,7 @@ export default function Weather24() {
             >
               <stop
                 offset={off}
-                stopColor='#fc0f03'
+                stopColor='#A30000'
                 stopOpacity={1}
               />
               <stop
@@ -70,7 +77,7 @@ export default function Weather24() {
           </defs>
           <Area
             type='monotone'
-            dataKey='uv'
+            dataKey='°C'
             stroke='#000'
             fill='url(#splitColor)'
           />
@@ -79,10 +86,11 @@ export default function Weather24() {
     </Wrapper24>
   )
 }
+
 const Wrapper24 = styled.div`
   margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 70px;
-  width: '100%';
+  width: 100%;
   height: 400px;
 `
