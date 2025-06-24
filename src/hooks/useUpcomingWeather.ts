@@ -7,11 +7,17 @@ interface ErrorResponse {
   }
 }
 
-export const useUpcomingWeather = () => {
+export const useUpcomingWeather = (
+  coords: { latitude: number; longitude: number } | null
+) => {
   return useQuery<ForecastTenDays>({
-    queryKey: ['weather', '10DayForecast'],
+    queryKey: ['weather', '10DayForecast', coords?.latitude, coords?.longitude],
     queryFn: async () => {
-      const response = await fetch('/api/weather/hourlyForecast')
+      const url = coords
+        ? `/api/weather/hourlyForecast?lat=${coords.latitude}&lon=${coords.longitude}`
+        : '/api/weather/hourlyForecast'
+
+      const response = await fetch(url)
       if (!response.ok) {
         let errorData: ErrorResponse | null = null
         try {
@@ -23,5 +29,6 @@ export const useUpcomingWeather = () => {
       }
       return response.json()
     },
+    enabled: !!coords || true,
   })
 }

@@ -2,10 +2,18 @@ import { isWeatherErrorResponseFor10Days } from '@/interfaces/typeguards'
 import { WeatherApiError, ForecastTenDays } from '@/interfaces/types'
 import { NextResponse } from 'next/server'
 
-export const GET = async (): Promise<NextResponse> => {
+export const GET = async (request: Request): Promise<NextResponse> => {
   try {
+    const { searchParams } = new URL(request.url)
+    const lat = searchParams.get('lat')
+    const lon = searchParams.get('lon')
+
+    // Если нет координат - используем Москву как fallback
+    const latitude = lat ? parseFloat(lat) : 55.7558
+    const longitude = lon ? parseFloat(lon) : 37.6173
+
     const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=55.7558&longitude=37.6173&forecast_days=10&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_hours,weathercode&timezone=Europe/Moscow`
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&forecast_days=10&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_hours,weathercode&timezone=auto`
     )
 
     const data: ForecastTenDays | WeatherApiError = await response.json()

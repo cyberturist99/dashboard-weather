@@ -7,11 +7,17 @@ interface ErrorResponse {
   }
 }
 
-export const useCurrentWeather = () => {
+export const useCurrentWeather = (
+  coords: { latitude: number; longitude: number } | null
+) => {
   return useQuery<WeatherData>({
-    queryKey: ['weather', 'current'],
+    queryKey: ['weather', 'current', coords?.latitude, coords?.longitude],
     queryFn: async () => {
-      const response = await fetch('/api/weather/current')
+      const url = coords
+        ? `/api/weather/current?lat=${coords.latitude}&lon=${coords.longitude}`
+        : '/api/weather/current'
+
+      const response = await fetch(url)
       if (!response.ok) {
         let errorData: ErrorResponse | null = null
         try {
@@ -23,5 +29,6 @@ export const useCurrentWeather = () => {
       }
       return response.json()
     },
+    enabled: !!coords || true,
   })
 }
