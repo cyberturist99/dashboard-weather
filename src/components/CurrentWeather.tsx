@@ -4,6 +4,7 @@
 import Weather24 from '@/components/Weather24'
 import UpcomingWeather from '@/components/UpcomingWeather'
 import WeatherAdditional from '@/components/WeatherAdditional'
+import Loader from '@/UI/Loader'
 import styled from 'styled-components'
 import { useCurrentWeather } from '@/hooks/useCurrentWeather'
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -16,7 +17,12 @@ export default function CurrentWeather() {
   } = useGeolocation()
   const { data, isLoading, isError, error } = useCurrentWeather(coordinates)
 
-  if (isGeoLoading || isLoading) return <WrapperMain>Загрузка...</WrapperMain>
+  if (isGeoLoading || isLoading)
+    return (
+      <WrapperMain>
+        <Loader />
+      </WrapperMain>
+    )
   if (geoError)
     return <WrapperMain>{geoError} (Показываем погоду для Москвы)</WrapperMain>
   if (isError) return <WrapperMain>{error.message}</WrapperMain>
