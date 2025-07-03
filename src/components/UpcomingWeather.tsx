@@ -13,7 +13,7 @@ import {
   TooltipProps,
 } from 'recharts'
 import { useUpcomingWeather } from '@/hooks/useUpcomingWeather'
-import { useGeolocation } from '@/hooks/useGeolocation'
+
 import {
   NameType,
   ValueType,
@@ -29,6 +29,13 @@ function getWeekdays(dates: string[]): string[] {
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
     return `${dayName}, ${day}.${month}`
   })
+}
+
+interface UpcomingWeatherProps {
+  coordinates: {
+    latitude: number
+    longitude: number
+  }
 }
 
 interface ChartDataPoint {
@@ -64,8 +71,7 @@ const CustomTooltip = ({
   )
 }
 
-export default function UpcomingWeather() {
-  const { coordinates, error: geoError } = useGeolocation()
+export default function UpcomingWeather({ coordinates }: UpcomingWeatherProps) {
   const { data, isLoading, isError, error } = useUpcomingWeather(coordinates)
 
   if (isLoading) return <LoadingWrapper>Загружаем прогноз...</LoadingWrapper>
@@ -86,12 +92,6 @@ export default function UpcomingWeather() {
     <Wrapper>
       <Header>
         <Title>Прогноз на 10 дней</Title>
-        {geoError && (
-          <GeoNotice>
-            <WarningIcon>⚠️</WarningIcon> {geoError} (используем данные для
-            Москвы)
-          </GeoNotice>
-        )}
       </Header>
 
       <ChartContainer>
@@ -175,21 +175,6 @@ const Title = styled.h2`
   font-size: 1.4rem;
   margin: 0 0 8px 0;
   font-weight: 600;
-`
-
-const GeoNotice = styled.div`
-  display: flex;
-  align-items: center;
-  color: #e67e22;
-  font-size: 0.9rem;
-  background: rgba(230, 126, 34, 0.1);
-  padding: 8px 12px;
-  border-radius: 8px;
-  margin-top: 8px;
-`
-
-const WarningIcon = styled.span`
-  margin-right: 6px;
 `
 
 const ChartContainer = styled.div`

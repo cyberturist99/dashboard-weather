@@ -11,8 +11,7 @@ export const GET = async (request: Request): Promise<NextResponse> => {
     const lat = searchParams.get('lat')
     const lon = searchParams.get('lon')
 
-    // Если нет координат - используем Москву как fallback
-    const locationQuery = lat && lon ? `${lat},${lon}` : 'Moscow'
+    const locationQuery = `${lat},${lon}`
 
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${locationQuery}&days=2&aqi=no&alerts=no`

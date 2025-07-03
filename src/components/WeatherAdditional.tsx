@@ -7,7 +7,7 @@ import {
   convertInchesToMillimeters,
   translateWindDir,
 } from '@/utils/weatherAddhelpers'
-import Compass from '@/UI/Compass'
+import Compass from '@/ui/Compass'
 
 interface WeatherAdditionalProps {
   data: WeatherData

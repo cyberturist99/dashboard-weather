@@ -1,10 +1,11 @@
-// app/current-weather/page.tsx
 'use client'
+import { useEffect } from 'react'
+import { toast } from 'react-toastify'
 
 import Weather24 from '@/components/Weather24'
 import UpcomingWeather from '@/components/UpcomingWeather'
 import WeatherAdditional from '@/components/WeatherAdditional'
-import Loader from '@/UI/Loader'
+import Loader from '@/ui/Loader'
 import styled from 'styled-components'
 import { useCurrentWeather } from '@/hooks/useCurrentWeather'
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -17,14 +18,21 @@ export default function CurrentWeather() {
   } = useGeolocation()
   const { data, isLoading, isError, error } = useCurrentWeather(coordinates)
 
+  useEffect(() => {
+    if (geoError) {
+      toast.warn(`${geoError} (используем данные для Москвы)`, {
+        toastId: 'geo-error',
+      })
+    }
+  }, [geoError])
+
   if (isGeoLoading || isLoading)
     return (
       <WrapperMain>
         <Loader />
       </WrapperMain>
     )
-  if (geoError)
-    return <WrapperMain>{geoError} (Показываем погоду для Москвы)</WrapperMain>
+
   if (isError) return <WrapperMain>{error.message}</WrapperMain>
   if (!data) return <WrapperMain>Нет данных</WrapperMain>
 
@@ -42,7 +50,7 @@ export default function CurrentWeather() {
       </WeatherInfo>
 
       <Weather24 forecast={forecastday[0].hour} />
-      <UpcomingWeather />
+      {coordinates && <UpcomingWeather coordinates={coordinates} />}
       <WeatherAdditional data={data} />
     </WrapperMain>
   )

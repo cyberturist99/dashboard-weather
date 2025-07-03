@@ -4,7 +4,10 @@ interface GeolocationCoordinates {
   latitude: number
   longitude: number
 }
-
+const MOSCOW_COORDS = {
+  latitude: 55.75583,
+  longitude: 37.61778,
+}
 export const useGeolocation = () => {
   const [coordinates, setCoordinates] = useState<GeolocationCoordinates | null>(
     null
@@ -40,6 +43,7 @@ export const useGeolocation = () => {
           errorMessage = 'Время ожидания запроса истекло'
           break
       }
+      setCoordinates(MOSCOW_COORDS)
       setError(errorMessage)
       setIsLoading(false)
     }

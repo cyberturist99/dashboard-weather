@@ -109,11 +109,11 @@ export default function Weather24({ forecast }: Weather24Props) {
               >
                 <stop
                   offset='0%'
-                  stopColor='#FF9A3E'
+                  stopColor='#F1BA8B'
                 />
                 <stop
                   offset='100%'
-                  stopColor='#FFC93E'
+                  stopColor='#E7491B'
                 />
               </linearGradient>
 
@@ -143,7 +143,7 @@ export default function Weather24({ forecast }: Weather24Props) {
               >
                 <stop
                   offset={off}
-                  stopColor='#FF9A3E'
+                  stopColor='#ec9006'
                   stopOpacity={1}
                 />
                 <stop
@@ -157,7 +157,7 @@ export default function Weather24({ forecast }: Weather24Props) {
               type='monotone'
               dataKey='°C'
               stroke='#444'
-              fill='url(#splitColor)'
+              fill='url(#warmGradient)'
               strokeWidth={2}
             />
           </AreaChart>

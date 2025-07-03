@@ -1,4 +1,4 @@
-import { isWeatherErrorResponseFor10Days } from '@/interfaces/typeguards'
+import { isWeatherErrorResponse } from '@/interfaces/typeguards'
 import { WeatherApiError, ForecastTenDays } from '@/interfaces/types'
 import { NextResponse } from 'next/server'
 
@@ -19,7 +19,7 @@ export const GET = async (request: Request): Promise<NextResponse> => {
     const data: ForecastTenDays | WeatherApiError = await response.json()
 
     if (!response.ok) {
-      if (isWeatherErrorResponseFor10Days(data)) {
+      if (isWeatherErrorResponse(data)) {
         return NextResponse.json({ error: data.error.message }, { status: 500 })
       } else {
         throw new Error('Unknown response from API')

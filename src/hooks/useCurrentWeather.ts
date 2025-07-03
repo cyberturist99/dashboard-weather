@@ -13,9 +13,10 @@ export const useCurrentWeather = (
   return useQuery<WeatherData>({
     queryKey: ['weather', 'current', coords?.latitude, coords?.longitude],
     queryFn: async () => {
-      const url = coords
-        ? `/api/weather/current?lat=${coords.latitude}&lon=${coords.longitude}`
-        : '/api/weather/current'
+      if (!coords) {
+        throw new Error('smth went wrong with coordinates')
+      }
+      const url = `/api/weather/current?lat=${coords.latitude}&lon=${coords.longitude}`
 
       const response = await fetch(url)
       if (!response.ok) {
@@ -29,6 +30,6 @@ export const useCurrentWeather = (
       }
       return response.json()
     },
-    enabled: !!coords || true,
+    enabled: !!coords,
   })
 }
