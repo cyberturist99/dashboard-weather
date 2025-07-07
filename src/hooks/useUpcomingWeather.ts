@@ -29,6 +29,5 @@ export const useUpcomingWeather = (
       }
       return response.json()
     },
-    enabled: !!coords,
   })
 }

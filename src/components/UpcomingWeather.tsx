@@ -35,7 +35,7 @@ interface UpcomingWeatherProps {
   coordinates: {
     latitude: number
     longitude: number
-  }
+  } | null
 }
 
 interface ChartDataPoint {

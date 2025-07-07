@@ -1,6 +1,7 @@
 import { isWeatherErrorResponse } from '@/interfaces/typeguards'
 import { WeatherApiError, ForecastTenDays } from '@/interfaces/types'
 import { NextResponse } from 'next/server'
+import { geoCoordsValidation } from '@/utils/geoCoordsValidation'
 
 export const GET = async (request: Request): Promise<NextResponse> => {
   try {
@@ -8,10 +9,10 @@ export const GET = async (request: Request): Promise<NextResponse> => {
     const lat = searchParams.get('lat')
     const lon = searchParams.get('lon')
 
-    // Если нет координат - используем Москву как fallback
-    const latitude = lat ? parseFloat(lat) : 55.7558
-    const longitude = lon ? parseFloat(lon) : 37.6173
+    const validationResult = geoCoordsValidation(lat, lon)
 
+    const latitude = `${validationResult.coords.latitude}`
+    const longitude = `${validationResult.coords.longitude}`
     const response = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&forecast_days=10&daily=temperature_2m_max,temperature_2m_min,precipitation_sum,precipitation_hours,weathercode&timezone=auto`
     )

@@ -16,7 +16,10 @@ export default function CurrentWeather() {
     error: geoError,
     isLoading: isGeoLoading,
   } = useGeolocation()
-  const { data, isLoading, isError, error } = useCurrentWeather(coordinates)
+  const { data, isLoading, isError, error } = useCurrentWeather(
+    coordinates,
+    isGeoLoading
+  )
 
   useEffect(() => {
     if (geoError) {
@@ -48,9 +51,8 @@ export default function CurrentWeather() {
         {Math.round(forecastday[0].day.maxtemp_c)}°, мин.:{' '}
         {Math.round(forecastday[0].day.mintemp_c)}°
       </WeatherInfo>
-
       <Weather24 forecast={forecastday[0].hour} />
-      {coordinates && <UpcomingWeather coordinates={coordinates} />}
+      <UpcomingWeather coordinates={coordinates} />
       <WeatherAdditional data={data} />
     </WrapperMain>
   )

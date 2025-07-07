@@ -8,15 +8,15 @@ interface ErrorResponse {
 }
 
 export const useCurrentWeather = (
-  coords: { latitude: number; longitude: number } | null
+  coords: { latitude: number; longitude: number } | null,
+  isGeoLoading: boolean
 ) => {
   return useQuery<WeatherData>({
     queryKey: ['weather', 'current', coords?.latitude, coords?.longitude],
     queryFn: async () => {
-      if (!coords) {
-        throw new Error('smth went wrong with coordinates')
-      }
-      const url = `/api/weather/current?lat=${coords.latitude}&lon=${coords.longitude}`
+      const url = coords
+        ? `/api/weather/current?lat=${coords.latitude}&lon=${coords.longitude}`
+        : `/api/weather/current`
 
       const response = await fetch(url)
       if (!response.ok) {
@@ -30,6 +30,6 @@ export const useCurrentWeather = (
       }
       return response.json()
     },
-    enabled: !!coords,
+    enabled: !isGeoLoading,
   })
 }
